@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  gap: 0;
+}
+
+:root {
+  --primary: #0c121f;
+  --buttons: #007a3f;
+}
+
+body {
+  background-color: var(--primary);
+}
