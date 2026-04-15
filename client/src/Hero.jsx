@@ -1,7 +1,8 @@
 import Leftbar from "./pages/Left-sidebar";
-import Righttbar from "./pages/Left-sidebar";
+import Rightbar from "./pages/Right-side.jsx";
 import Newsfeed from "./pages/Newsfeed.jsx";
 import Header from "./pages/Header";
+
 import "./hero.css";
 
 function Hero() {
@@ -11,6 +12,7 @@ function Hero() {
       <div className="hero">
         <Leftbar />
         <Newsfeed />
+        <Rightbar />
       </div>
     </>
   );

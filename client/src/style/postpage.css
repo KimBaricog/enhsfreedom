@@ -1,10 +1,22 @@
-.nf-box {
+.postpage-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 95vh;
+  color: white;
+}
+.postpage-container .back {
+  width: 60%;
+}
+.nf-box-post {
   display: flex;
   border: 1px solid rgba(255, 255, 255, 0.3);
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  width: 70%;
+  width: 50%;
   border-radius: 20px;
   font-family: sans-serif;
   padding: 10px;
@@ -20,31 +32,31 @@
   overflow-y: auto;
   scrollbar-width: none;
 }
-.nf-box span {
+.nf-box-post span {
   font-size: 12px;
   color: gray;
 }
-.nf-box img {
+.nf-box-post img {
   width: 40px;
   border-radius: 50px;
 }
-.nf-box .post-head {
+.nf-box-post .post-head {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
 }
-.nf-box .img-post {
+.nf-box-post .img-post {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
 }
-.nf-box .img-post #imgp {
+.nf-box-post .img-post #imgp {
   width: 500px;
   border-radius: 5px;
 }
-.nf-box .react {
+.nf-box-post .react {
   width: 100%;
   margin-top: 20px;
   padding-top: 10px;

@@ -1,7 +1,7 @@
 .p-box {
   position: fixed;
   background-color: #000000a3;
-  width: 100%;
+  width: 110%;
   height: 100vh;
   top: 0;
   display: flex;
@@ -32,8 +32,8 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .info textarea:focus {
-  border: none;
-  outline: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  outline: none;
 }
 #exit {
   background-color: transparent;
@@ -96,4 +96,21 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
+}
+.prev {
+  width: 90%;
+  min-height: 0vh;
+  max-height: 30vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.prev img {
+  width: 100%;
+}
+.prev ::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+.prev ::-webkit-scrollbar {
+  width: 0px;
 }

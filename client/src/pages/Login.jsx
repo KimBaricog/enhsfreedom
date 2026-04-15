@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
@@ -42,8 +42,12 @@ function Login() {
   return (
     <>
       <div className="login">
+        <p id="logo">
+          ENHS.<span style={{ color: "#007a3f" }}>FREEDOM</span>
+        </p>
         <form onSubmit={handleLogin}>
-          <p>{alert}</p>
+          <h2>Login Account</h2>
+          <p style={{ color: "red" }}>{alert}</p>
           <input
             placeholder="Codename"
             onChange={(e) => setCodename(e.target.value)}
@@ -56,8 +60,8 @@ function Login() {
           />
 
           <button type="submit">Login</button>
+          <Link to="/register">Create Account</Link>
         </form>
-        <Link to="/register">Create Account</Link>
       </div>
     </>
   );

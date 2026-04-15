@@ -1,13 +1,16 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .Newsfeed {
   width: 70%;
-  height: 89vh;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  height: 90vh;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
   overflow-y: auto;
-  scrollbar-width: none;
   color: white;
   gap: 50px;
   padding-top: 20px;
@@ -41,4 +44,24 @@
   object-fit: cover;
   border-radius: 50px;
   margin-right: 10px;
+}
+/* Entire scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+  background: transparent; /* or any color */
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background: #213247;
+  border-radius: 10px;
+}
+
+/* Hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

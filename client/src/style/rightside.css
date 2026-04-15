@@ -1,0 +1,42 @@
+.R-container {
+  height: calc(100vh - 78px);
+  width: 20%;
+  height: 90vh;
+  color: white;
+  display: flex;
+  padding: 20px;
+}
+.R-container .top-react {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  background-color: rgba(3, 3, 48, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(3, 255, 129, 0.588);
+  border-color: #4d7c0f80;
+  padding: 10px;
+}
+.post {
+  width: 100%;
+  height: 20vh;
+  padding: 10px;
+  background-color: rgba(3, 3, 48, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(3, 255, 129, 0.588);
+  border-color: #4d7c0f80;
+}
+.R-container .top-react p {
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+.post span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+}
+.post h3 {
+  color: rgb(10, 215, 10);
+  cursor: pointer;
+}

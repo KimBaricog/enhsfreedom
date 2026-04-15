@@ -2,6 +2,7 @@ import { useAuth } from "./AuthContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Postpage from "./pages/Postpage";
 import Dashboard from "./Hero";
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/login" replace />}
         />
+
+        <Route path="/post/:id" element={<Postpage />} />
       </Routes>
     </BrowserRouter>
   );

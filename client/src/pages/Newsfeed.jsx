@@ -11,10 +11,11 @@ function Newsfeed() {
 
   if (!authReady) return <h2>Loading...</h2>;
 
-  if (!user) {
-    window.location.href = "/login";
-    return null;
-  }
+  useEffect(() => {
+    if (authReady && !user) {
+      window.location.href = "/login";
+    }
+  }, [authReady, user]);
 
   // LOAD POSTS
   const loadPosts = async () => {
@@ -24,9 +25,11 @@ function Newsfeed() {
       });
 
       const data = await res.json();
-      setPosts(data);
+
+      setPosts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.log("Failed to load posts", err);
+      setPosts([]); // prevent crash
     }
   };
 
@@ -50,7 +53,7 @@ function Newsfeed() {
 
       {/* POSTS */}
       {posts.map((post) => (
-        <Newsfeedbox key={post.id} post={post} />
+        <Newsfeedbox key={post.id} post={post} setPosts={setPosts} />
       ))}
 
       <Postbox Vissible={showPost} setVissible={setShowPost} />

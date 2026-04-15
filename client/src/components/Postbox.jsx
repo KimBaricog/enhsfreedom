@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../AuthContext";
 import "./stylecom/postbox.css";
+import Back from "./Back";
+import X from "./x";
 
 function Postbox({ Vissible, setVissible }) {
   const [text, setText] = useState("");
@@ -99,7 +101,7 @@ function Postbox({ Vissible, setVissible }) {
             <p>Post</p>
           </div>
           <div id="exit" onClick={close}>
-            Back
+            <X />
           </div>
         </div>
 
@@ -117,23 +119,15 @@ function Postbox({ Vissible, setVissible }) {
         <input
           ref={fileRef}
           type="file"
-          accept="image/*"
+          accept="image/png, image/jpg"
           onChange={handleImage}
           style={{ display: "none" }}
         />
 
         {/* image preview */}
-        {preview && (
-          <img
-            src={preview}
-            alt="preview"
-            style={{
-              width: "300px",
-              maxHeight: "300px",
-              borderRadius: "10px",
-            }}
-          />
-        )}
+        <div className="prev">
+          {preview && <img src={preview} alt="preview" />}
+        </div>
 
         <div className="post-footer">
           <div id="createpost" onClick={createPost}>
