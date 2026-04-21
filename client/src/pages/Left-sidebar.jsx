@@ -22,15 +22,14 @@ function Leftside() {
           <a href="/dashboard">
             <Home />
           </a>
-
           <Message />
+          <button
+            style={{ backgroundColor: "transparent", border: "none" }}
+            onClick={() => setlogout(true)}
+          >
+            <Leavepage />
+          </button>
         </div>
-        <button
-          style={{ backgroundColor: "transparent", border: "none" }}
-          onClick={() => setlogout(true)}
-        >
-          <Leavepage />
-        </button>
       </div>
       <Logout islogout={logout} setislogout={setlogout} />
     </>

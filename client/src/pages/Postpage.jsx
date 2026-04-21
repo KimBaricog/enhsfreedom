@@ -1,26 +1,20 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Back from "../components/Back";
-import Heart from "../components/Heart";
-import Dislike from "../components/Dislike";
 
 import "../style/postpage.css";
 
 function PostPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [postt, setPostt] = useState(null);
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/post/${id}`, {
-      credentials: "include",
-    })
+    fetch(`http://localhost:5000/post/${id}`)
       .then((res) => res.json())
-      .then((data) => setPostt(data))
-      .catch((err) => console.error(err));
+      .then((data) => setPost(data));
   }, [id]);
 
-  if (!postt) return <p>Loading...</p>;
+  if (!post) return <p>Loading...</p>;
 
   function timeAgo(dateString) {
     const now = new Date();
@@ -42,54 +36,43 @@ function PostPage() {
 
   return (
     <div className="postpage-container">
-      {/* BACK BUTTON */}
-      <div className="back" onClick={() => navigate("/dashboard")}>
-        <Back />
+      <div className="back">
+        <a href="/dashboard">
+          <Back />
+        </a>
       </div>
-
       <div className="nf-box-post">
-        {/* HEADER */}
         <div className="post-head">
           <img
             src={
-              postt.profile_pic
-                ? `http://localhost:5000/uploads/${postt.profile_pic}`
+              post.profile_pic
+                ? `http://localhost:5000/uploads/${post.profile_pic}`
                 : "/default-avatar.png"
             }
             alt="profile"
           />
 
-          <div>
-            <b>{postt.codename}</b>
-            <br />
-            <span>{timeAgo(postt.created_at)}</span>
-          </div>
+          <b>{post.codename}</b>
+          <span>{timeAgo(post.created_at)}</span>
         </div>
 
-        {/* CONTENT */}
         <div className="post-content">
-          <p>{postt.content}</p>
+          <p>{post.content}</p>
         </div>
 
-        {/* IMAGE */}
         <div className="img-post">
-          {postt.image && (
+          {post.image && (
             <img
               id="imgp"
-              src={`http://localhost:5000/uploads/${postt.image}`}
-              alt="post"
+              src={`http://localhost:5000/uploads/${post.image}`}
+              alt=""
             />
           )}
         </div>
 
-        {/* REACTIONS */}
         <div className="react">
-          <Heart post={postt} setPost={setPostt} />
-          <Dislike />
-
-          {postt.reacts > 0 && (
-            <p style={{ color: "red", marginLeft: "10px" }}>+{postt.reacts}</p>
-          )}
+          {/* add your components here if needed */}
+          {post.reacts > 0 && <p style={{ color: "red" }}>+{post.reacts}</p>}
         </div>
       </div>
     </div>

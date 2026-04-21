@@ -65,3 +65,14 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+@media (max-width: 769px) {
+  .Newsfeed {
+    width: 100%;
+    border: none;
+    gap: 0;
+  }
+  .Newsfeed button {
+    width: 100%;
+    margin: 0;
+  }
+}

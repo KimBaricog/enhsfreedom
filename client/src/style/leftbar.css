@@ -20,3 +20,30 @@
   gap: 20px;
   width: 100%;
 }
+@media (max-width: 769px) {
+  .leftbar {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    flex-direction: row;
+    height: auto;
+    border: none;
+    margin-top: 10px;
+  }
+  .actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    width: 100%;
+    gap: 20px;
+    padding-left: 20px;
+  }
+  .username {
+    margin: 0;
+    border: none;
+    width: 20%;
+  }
+}

@@ -40,3 +40,8 @@
   color: rgb(10, 215, 10);
   cursor: pointer;
 }
+@media (max-width: 769px) {
+  .R-container {
+    display: none;
+  }
+}

@@ -14,3 +14,14 @@
   font-size: 20px;
   margin-right: 20px;
 }
+@media (max-width: 769px) {
+  .header {
+    justify-content: center;
+    height: 12vh;
+    align-items: flex-start;
+  }
+  .header p {
+    font-size: 17px;
+    margin: 0;
+  }
+}

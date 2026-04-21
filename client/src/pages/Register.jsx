@@ -83,11 +83,11 @@ function Register() {
   return (
     <div className="register-main">
       <div className="Register-box">
-        <a href="/login">
+        <a id="back-register" href="/login">
           <Back />
         </a>
         <div className="left">
-          <h2>{alertmes}</h2>
+          <h2 id="alert-register">{alertmes}</h2>
           <p>Don’t use real name to stay anonymous</p>
 
           {/* USERNAME */}

@@ -54,3 +54,12 @@ form input {
   font-family: "Rubik Mono One", monospace;
   font-size: 30px;
 }
+@media (max-width: 769px) {
+  form {
+    width: 100%;
+  }
+  .login {
+    height: 80vh;
+    justify-content: center;
+  }
+}

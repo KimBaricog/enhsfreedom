@@ -67,3 +67,17 @@
   justify-content: flex-start;
   gap: 15px;
 }
+@media (max-width: 769px) {
+  .nf-box-post {
+    width: 100%;
+  }
+  .nf-box-post .img-post #imgp {
+    width: 350px;
+    border-radius: 5px;
+    max-height: 350px;
+  }
+  .postpage-container .back {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

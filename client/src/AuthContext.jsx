@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
           setUser(data);
         } else {
           // retry once after short delay
-          setTimeout(checkAuth, 300);
+          setTimeout(checkAuth, 30000);
         }
       } catch {
         setUser(null);

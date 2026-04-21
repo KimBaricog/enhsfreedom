@@ -55,3 +55,14 @@
   justify-content: flex-start;
   gap: 15px;
 }
+@media (max-width: 769px) {
+  .nf-box {
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  .nf-box .img-post #imgp {
+    width: 350px;
+    border-radius: 5px;
+  }
+}

@@ -48,7 +48,7 @@ function Newsfeed() {
           }
           alt="profile"
         />
-        What's on your mind {user.codename}?
+        Any confessions {user.codename}?
       </button>
 
       {/* POSTS */}

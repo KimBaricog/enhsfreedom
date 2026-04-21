@@ -15,3 +15,8 @@
   border-radius: 50%;
   object-fit: cover;
 }
+@media (max-width: 769px) {
+  .user-name p {
+    display: none;
+  }
+}

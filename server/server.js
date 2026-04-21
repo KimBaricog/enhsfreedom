@@ -47,25 +47,25 @@ app.use(
   }),
 );
 
-// -------------------- MYSQL --------------------
+// DATABASE
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-// -------------------- TEST --------------------
+//  TEST
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-// -------------------- USERS --------------------
+// USERS
 app.get("/users", async (req, res) => {
   const [rows] = await db.query("SELECT * FROM users");
   res.json(rows);
 });
 
-// -------------------- LOGIN --------------------
+//LOGIN
 app.post("/login", async (req, res) => {
   try {
     const { codename, password } = req.body;
@@ -75,7 +75,7 @@ app.post("/login", async (req, res) => {
     ]);
 
     if (rows.length === 0) {
-      return res.status(400).json({ message: "Wrong user name or password!" });
+      return res.status(400).json({ message: "Empty inputs!" });
     }
 
     const user = rows[0];
@@ -143,44 +143,129 @@ app.post("/posts", upload.single("image"), async (req, res) => {
   }
 });
 
+app.post("/posts/:id/react", async (req, res) => {
+  const userId = req.session.userId; // ✅ FIXED
+  const postId = req.params.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const [existing] = await db.query(
+    "SELECT * FROM reactions WHERE user_id = ? AND post_id = ?",
+    [userId, postId],
+  );
+
+  if (existing.length > 0) {
+    await db.query("DELETE FROM reactions WHERE user_id = ? AND post_id = ?", [
+      userId,
+      postId,
+    ]);
+  } else {
+    await db.query("INSERT INTO reactions (user_id, post_id) VALUES (?, ?)", [
+      userId,
+      postId,
+    ]);
+  }
+
+  const [[countResult]] = await db.query(
+    "SELECT COUNT(*) AS reacts FROM reactions WHERE post_id = ?",
+    [postId],
+  );
+
+  const [check] = await db.query(
+    "SELECT * FROM reactions WHERE user_id = ? AND post_id = ?",
+    [userId, postId],
+  );
+
+  res.json({
+    reacts: countResult.reacts,
+    isReacted: check.length > 0,
+  });
+});
+
 // -------------------- GET POSTS (FIXED - PROFILE INCLUDED) --------------------
 app.get("/posts", async (req, res) => {
   try {
-    const [rows] = await db.query(`
-      SELECT 
-        posts.id,
-        posts.content,
-        posts.image,
-        posts.created_at,
-        users.codename,
-        users.profile_pic
-      FROM posts
-      JOIN users ON posts.user_id = users.user_id
-      ORDER BY posts.created_at DESC
-    `);
+    const userId = req.session.userId;
 
-    res.json(rows);
+    const [rows] = await db.query(
+      `
+SELECT 
+  posts.id AS id,
+  posts.content,
+  posts.image,
+  posts.created_at,
+  users.codename,
+  users.profile_pic,
+  COUNT(reactions.id) AS reacts,
+  MAX(CASE WHEN reactions.user_id = ? THEN 1 ELSE 0 END) AS isReacted
+FROM posts
+JOIN users ON posts.user_id = users.user_id
+LEFT JOIN reactions ON reactions.post_id = posts.id
+GROUP BY posts.id
+ORDER BY posts.created_at DESC;
+      `,
+      [userId],
+    );
+
+    return res.json(rows);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Server error" });
+    return res.json([]);
   }
 });
 
 // -------------------- REGISTER --------------------
-app.post("/register", upload.single("profile_pic"), (req, res) => {
-  const { username, password } = req.body;
-  const profilePic = req.file ? req.file.filename : null;
+app.post("/register", upload.single("profile_pic"), async (req, res) => {
+  try {
+    let { username, password } = req.body;
 
-  const sql = `
-    INSERT INTO users (codename, password, profile_pic)
-    VALUES (?, ?, ?)
-  `;
+    // 🔥 CLEAN INPUT
+    username = username?.trim();
+    password = password?.trim();
 
-  db.query(sql, [username, password, profilePic], (err) => {
-    if (err) return res.status(500).json({ error: err });
+    // ❌ VALIDATION
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "Username and password are required",
+      });
+    }
 
-    res.json({ message: "Account created!" });
-  });
+    if (username.length === 0) {
+      return res.status(400).json({
+        message: "Username cannot be empty",
+      });
+    }
+
+    // 🔍 CHECK DUPLICATE USERNAME
+    const [existing] = await db.query(
+      "SELECT user_id FROM users WHERE codename = ?",
+      [username],
+    );
+
+    if (existing.length > 0) {
+      return res.status(400).json({
+        message: "Username already exists",
+      });
+    }
+
+    // ✅ INSERT USER
+    await db.query(
+      "INSERT INTO users (codename, password, profile_pic) VALUES (?, ?, ?)",
+      [username, password, req.file?.filename || null],
+    );
+
+    return res.json({
+      message: "Account created!",
+    });
+  } catch (err) {
+    console.log("REGISTER ERROR:", err);
+
+    return res.status(500).json({
+      message: "Server error. Please try again.",
+    });
+  }
 });
 
 // -------------------- UPDATE PROFILE --------------------
@@ -199,9 +284,52 @@ app.post("/update-profile", (req, res) => {
   });
 });
 
+// -------------------- TOP POST --------------------
+app.get("/top-post", async (req, res) => {
+  try {
+    const sql = `
+  SELECT p.*, u.codename, COUNT(r.id) AS reaction_count
+  FROM posts p
+  LEFT JOIN users u ON p.user_id = u.user_id
+  LEFT JOIN reactions r ON p.id = r.post_id
+  GROUP BY p.id, u.codename
+  ORDER BY reaction_count DESC
+  LIMIT 1
+`;
+
+    const [rows] = await db.query(sql);
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
+app.get("/post/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const sql = `
+  SELECT p.*, u.codename, u.profile_pic, COUNT(r.id) AS reaction_count
+  FROM posts p
+  LEFT JOIN users u ON p.user_id = u.user_id
+  LEFT JOIN reactions r ON p.id = r.post_id
+  WHERE p.id = ?
+  GROUP BY p.id, u.codename, u.profile_pic
+`;
+
+    const [rows] = await db.query(sql, [postId]);
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
 // -------------------- START SERVER --------------------
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
