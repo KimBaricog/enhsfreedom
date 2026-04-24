@@ -8,10 +8,13 @@ function Heart({ post, setPosts, setPost }) {
   }, [post?.isReacted]);
 
   const reactPost = async () => {
-    const res = await fetch(`http://localhost:5000/posts/${post.id}/react`, {
-      method: "POST",
-      credentials: "include",
-    });
+    const res = await fetch(
+      `https://enhsfreedom-1.onrender.com/posts/${post.id}/react`,
+      {
+        method: "POST",
+        credentials: "include",
+      },
+    );
 
     const data = await res.json();
 

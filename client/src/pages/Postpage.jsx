@@ -9,7 +9,7 @@ function PostPage() {
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/post/${id}`)
+    fetch(`https://enhsfreedom-1.onrender.com/post/${id}`)
       .then((res) => res.json())
       .then((data) => setPost(data));
   }, [id]);
@@ -46,7 +46,7 @@ function PostPage() {
           <img
             src={
               post.profile_pic
-                ? `http://localhost:5000/uploads/${post.profile_pic}`
+                ? `https://enhsfreedom-1.onrender.com/uploads/${post.profile_pic}`
                 : "/default-avatar.png"
             }
             alt="profile"
@@ -64,7 +64,7 @@ function PostPage() {
           {post.image && (
             <img
               id="imgp"
-              src={`http://localhost:5000/uploads/${post.image}`}
+              src={`https://enhsfreedom-1.onrender.com/uploads/${post.image}`}
               alt=""
             />
           )}

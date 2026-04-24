@@ -278,21 +278,36 @@ app.post("/update-profile", (req, res) => {
 app.get("/top-post", async (req, res) => {
   try {
     const sql = `
-  SELECT p.*, u.codename, COUNT(r.id) AS reaction_count
-  FROM posts p
-  LEFT JOIN users u ON p.user_id = u.user_id
-  LEFT JOIN reactions r ON p.id = r.post_id
-  GROUP BY p.id, u.codename
-  ORDER BY reaction_count DESC
-  LIMIT 1
-`;
+      SELECT 
+        p.id,
+        p.content,
+        p.image,
+        p.created_at,
+        p.user_id,
+        u.codename,
+        u.profile_pic,
+        COUNT(r.id) AS reaction_count
+      FROM posts p
+      LEFT JOIN users u ON p.user_id = u.user_id
+      LEFT JOIN reactions r ON p.id = r.post_id
+      GROUP BY 
+        p.id,
+        p.content,
+        p.image,
+        p.created_at,
+        p.user_id,
+        u.codename,
+        u.profile_pic
+      ORDER BY reaction_count DESC
+      LIMIT 1;
+    `;
 
     const [rows] = await db.query(sql);
 
-    res.json(rows[0]);
+    res.json(rows[0] || null);
   } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
+    console.error("TOP POST ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
