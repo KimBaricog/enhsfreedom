@@ -16,7 +16,7 @@ function Username() {
     <>
       <div className="user-name">
         <img
-          src={`http://localhost:5000/uploads/${user.profile_pic}`}
+          src={`https://enhsfreedom-1.onrender.com/uploads/${user.profile_pic}`}
           alt="profile"
         />
 

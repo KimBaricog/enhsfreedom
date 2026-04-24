@@ -31,7 +31,7 @@ function Newsfeedbox({ post, setPosts }) {
         <img
           src={
             post.profile_pic
-              ? `http://localhost:5000/uploads/${post.profile_pic}`
+              ? `https://enhsfreedom-1.onrender.com/uploads/${post.profile_pic}`
               : "/default-avatar.png"
           }
           alt="profile"
@@ -55,7 +55,10 @@ function Newsfeedbox({ post, setPosts }) {
       {/* IMAGE CLICK */}
       <div className="img-post">
         {post.image && (
-          <img id="imgp" src={`http://localhost:5000/uploads/${post.image}`} />
+          <img
+            id="imgp"
+            src={`https://enhsfreedom-1.onrender.com/uploads/${post.image}`}
+          />
         )}
       </div>
 

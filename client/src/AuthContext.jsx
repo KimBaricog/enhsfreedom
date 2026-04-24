@@ -16,15 +16,16 @@ export function AuthProvider({ children }) {
           },
         );
 
-        if (res.ok) {
-          const data = await res.json();
-
-          setUser(data);
-        } else {
-          // retry once after short delay
-          setTimeout(checkAuth, 30000);
+        if (!res.ok) {
+          setUser(null);
+          setAuthReady(true);
+          return;
         }
-      } catch {
+
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error("Auth check failed:", err);
         setUser(null);
       } finally {
         setAuthReady(true);

@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const app = express();
+app.set("trust proxy", 1);
 
 // -------------------- CORS FIX --------------------
 app.use(
@@ -26,6 +27,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.options("*", cors());
 
 // -------------------- BODY PARSER --------------------
 app.use(express.json());
@@ -121,26 +124,34 @@ app.get("/dashboard", async (req, res) => {
 });
 
 // -------------------- POST CREATE --------------------
-app.post("/posts", upload.single("image"), async (req, res) => {
+app.get("/posts", async (req, res) => {
   try {
-    const { content } = req.body;
-    const userId = req.session.userId;
+    const userId = req.session.userId || 0;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Not logged in" });
-    }
-
-    const image = req.file ? req.file.filename : null;
-
-    await db.query(
-      "INSERT INTO posts (user_id, content, image) VALUES (?, ?, ?)",
-      [userId, content, image],
+    const [rows] = await db.query(
+      `
+SELECT 
+  posts.id,
+  posts.content,
+  posts.image,
+  posts.created_at,
+  users.codename,
+  users.profile_pic,
+  COUNT(reactions.id) AS reacts,
+  MAX(CASE WHEN reactions.user_id = ? THEN 1 ELSE 0 END) AS isReacted
+FROM posts
+JOIN users ON posts.user_id = users.user_id
+LEFT JOIN reactions ON reactions.post_id = posts.id
+GROUP BY posts.id, users.codename, users.profile_pic
+ORDER BY posts.created_at DESC;
+      `,
+      [userId],
     );
 
-    res.json({ message: "Post created" });
+    res.json(rows);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server error" });
+    console.log("POSTS ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -189,26 +200,6 @@ app.post("/posts/:id/react", async (req, res) => {
 app.get("/posts", async (req, res) => {
   try {
     const userId = req.session.userId;
-
-    const [rows] = await db.query(
-      `
-SELECT 
-  posts.id AS id,
-  posts.content,
-  posts.image,
-  posts.created_at,
-  users.codename,
-  users.profile_pic,
-  COUNT(reactions.id) AS reacts,
-  MAX(CASE WHEN reactions.user_id = ? THEN 1 ELSE 0 END) AS isReacted
-FROM posts
-JOIN users ON posts.user_id = users.user_id
-LEFT JOIN reactions ON reactions.post_id = posts.id
-GROUP BY posts.id
-ORDER BY posts.created_at DESC;
-      `,
-      [userId],
-    );
 
     return res.json(rows);
   } catch (err) {

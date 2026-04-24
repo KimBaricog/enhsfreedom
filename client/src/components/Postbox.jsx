@@ -33,7 +33,7 @@ function Postbox({ Vissible, setVissible }) {
   };
 
   const loadPosts = async () => {
-    await fetch("http://localhost:5000/posts", {
+    await fetch("https://enhsfreedom-1.onrender.com/posts", {
       credentials: "include",
     });
   };
@@ -69,7 +69,7 @@ function Postbox({ Vissible, setVissible }) {
       formData.append("image", image);
     }
 
-    await fetch("http://localhost:5000/posts", {
+    await fetch("https://enhsfreedom-1.onrender.com/posts", {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -92,7 +92,7 @@ function Postbox({ Vissible, setVissible }) {
       <div className="info">
         <div className="top">
           <img
-            src={`http://localhost:5000/uploads/${user.profile_pic}`}
+            src={`https://enhsfreedom-1.onrender.com/uploads/${user.profile_pic}`}
             alt="profile"
           />
 

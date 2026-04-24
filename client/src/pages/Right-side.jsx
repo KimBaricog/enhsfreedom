@@ -9,7 +9,7 @@ function Rigthside() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/top-post")
+    fetch("https://enhsfreedom-1.onrender.com/top-post")
       .then((res) => res.json())
       .then((data) => setSelectedPost(data));
   }, []);
