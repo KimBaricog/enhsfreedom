@@ -20,7 +20,7 @@ function Newsfeed() {
   // LOAD POSTS
   const loadPosts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/posts", {
+      const res = await fetch("https://enhsfreedom-1.onrender.com/posts", {
         credentials: "include",
       });
 
@@ -43,7 +43,7 @@ function Newsfeed() {
         <img
           src={
             user.profile_pic
-              ? `http://localhost:5000/uploads/${user.profile_pic}`
+              ? `https://enhsfreedom-1.onrender.com/uploads/${user.profile_pic}`
               : "/default-avatar.png"
           }
           alt="profile"

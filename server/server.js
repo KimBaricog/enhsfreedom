@@ -22,7 +22,7 @@ const app = express();
 // -------------------- CORS FIX --------------------
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
     credentials: true,
   }),
 );

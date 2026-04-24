@@ -62,7 +62,7 @@ function Register() {
         formData.append("profile_pic", file);
       }
 
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("https://enhsfreedom-1.onrender.com/register", {
         method: "POST",
         body: formData,
       });

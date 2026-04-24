@@ -9,9 +9,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:5000/dashboard", {
-          credentials: "include",
-        });
+        const res = await fetch(
+          "https://enhsfreedom-1.onrender.com/dashboard",
+          {
+            credentials: "include",
+          },
+        );
 
         if (res.ok) {
           const data = await res.json();
