@@ -10,7 +10,7 @@ function Logout({ islogout, setislogout }) {
         <div className="logout-container">
           <h2>Logout?</h2>
           <div className="logout-button">
-            <a href="/login">
+            <a href="/">
               <button id="yesbtn">Yes</button>
             </a>
 

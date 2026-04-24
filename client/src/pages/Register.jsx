@@ -83,7 +83,7 @@ function Register() {
   return (
     <div className="register-main">
       <div className="Register-box">
-        <a id="back-register" href="/login">
+        <a id="back-register" href="/">
           <Back />
         </a>
         <div className="left">
